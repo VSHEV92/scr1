@@ -33,6 +33,7 @@ module scr1_core_top (
 `endif // SCR1_DBG_EN
 
     // Fuses
+    input   logic [`SCR1_XLEN-1:0]                  scr1_rst_vector_i,
     input   logic [`SCR1_XLEN-1:0]                  core_fuse_mhartid_i,        // Fuse MHARTID value
 `ifdef SCR1_DBG_EN
     input   logic [31:0]                            tapc_fuse_idcode_i,         // Fuse IDCODE value
@@ -276,6 +277,7 @@ assign core_rst_n_o         = core_rst_n;
 scr1_pipe_top i_pipe_top (
     // Control
     .pipe_rst_n                     (core_rst_n             ),
+    .scr1_rst_vector_i              (scr1_rst_vector_i),
 `ifdef SCR1_DBG_EN
     .pipe2hdu_rdc_qlfy_i            (core2hdu_rdc_qlfy      ),
     .dbg_rst_n                      (hdu_rst_n              ),
@@ -290,7 +292,6 @@ scr1_pipe_top i_pipe_top (
     .clkctl2pipe_clk_dbgc_i         (clk_dbgc               ),
     .clkctl2pipe_clk_en_i           (clk_pipe_en            ),
 `endif // SCR1_CLKCTRL_EN
-
     // Instruction memory interface
     .pipe2imem_req_o                (core2imem_req_o        ),
     .pipe2imem_cmd_o                (core2imem_cmd_o        ),

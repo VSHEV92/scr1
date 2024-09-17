@@ -31,6 +31,7 @@ module scr1_top_axi (
 `endif // SCR1_DBG_EN
 
     // Fuses
+    input   logic [`SCR1_XLEN-1:0]                  scr1_rst_vector_i,
     input   logic [`SCR1_XLEN-1:0]                  fuse_mhartid,           // Hart ID
 `ifdef SCR1_DBG_EN
     input   logic [31:0]                            fuse_idcode,            // TAPC IDCODE
@@ -313,6 +314,7 @@ scr1_core_top i_core_top (
 
     // Fuses
     .core_fuse_mhartid_i        (fuse_mhartid     ),
+    .scr1_rst_vector_i          (scr1_rst_vector_i),
 `ifdef SCR1_DBG_EN
     .tapc_fuse_idcode_i         (fuse_idcode      ),
 `endif // SCR1_DBG_EN

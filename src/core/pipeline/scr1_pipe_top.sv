@@ -29,6 +29,8 @@ module scr1_pipe_top (
 `endif // SCR1_DBG_EN
     input   logic                                       clk,                        // Pipe clock
 
+    input   logic [`SCR1_XLEN-1:0]              scr1_rst_vector_i,
+
     // Instruction Memory Interface
     output  logic                                       pipe2imem_req_o,            // IMEM request
     output  type_scr1_mem_cmd_e                         pipe2imem_cmd_o,            // IMEM command
@@ -365,6 +367,7 @@ scr1_pipe_idu i_pipe_idu (
 scr1_pipe_exu i_pipe_exu (
     .rst_n                          (pipe_rst_n              ),
     .clk                            (clk                     ),
+    .scr1_rst_vector_i              (scr1_rst_vector_i),
 `ifdef SCR1_CLKCTRL_EN
     .clk_alw_on                     (clkctl2pipe_clk_alw_on_i),
     .clk_pipe_en                    (clkctl2pipe_clk_en_i),

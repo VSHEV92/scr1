@@ -55,7 +55,10 @@ module scr1_pipe_exu (
     // Common
     input   logic                               rst_n,                      // EXU reset
     input   logic                               clk,                        // Gated EXU clock
-`ifdef SCR1_CLKCTRL_EN
+    
+    input   logic [`SCR1_XLEN-1:0]              scr1_rst_vector_i,
+
+    `ifdef SCR1_CLKCTRL_EN
     input   logic                               clk_alw_on,                 // Not-gated EXU clock
     input   logic                               clk_pipe_en,                // EXU clock enabled flag
 `endif // SCR1_CLKCTRL_EN
@@ -685,7 +688,7 @@ assign pc_curr_upd = ((exu2pipe_instret_o | exu2csr_take_irq_o
 
 always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
-        pc_curr_ff <= SCR1_RST_VECTOR;
+        pc_curr_ff <= scr1_rst_vector_i;
     end else if (pc_curr_upd) begin
         pc_curr_ff <= pc_curr_next;
     end
@@ -706,7 +709,7 @@ assign pc_curr_next = exu2ifu_pc_new_req_o        ? exu2ifu_pc_new_o
 
 always_comb begin
     case (1'b1)
-        init_pc             : exu2ifu_pc_new_o = SCR1_RST_VECTOR;
+        init_pc             : exu2ifu_pc_new_o = scr1_rst_vector_i;
         exu2csr_take_exc_o,
         exu2csr_take_irq_o,
         exu2csr_mret_instr_o: exu2ifu_pc_new_o = csr2exu_new_pc_i;
